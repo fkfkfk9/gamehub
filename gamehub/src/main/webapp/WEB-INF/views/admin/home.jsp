@@ -17,16 +17,7 @@
         <nav class="dropdownmenu">         
             <jsp:include page="../include/admin_nav.jsp" flush="false" />
         </nav><div id="blankdiv"></div>
-        <!--aside-->
-        <aside>
-            <h4>관련 페이지</h4>
-            <p>메일 :</p>
-            <p>fkfkfk9@naver.com</p>
-            <p>소스코드 :</p>
-            <p>https://github.com/fkfkfk9/gamehub</p>
-            <p>작업중인 블로그 :</p>
-            <p>https://fkfkfk9.github.io/</p>
-        </aside>
+        
         <!-- section 본문 부분 -->
         <section>
             <h4>최근 게시글</h4>
@@ -47,6 +38,7 @@
             </article>
         </section>
         <script>
+        	$('section').css("width","97%");
 	        var result = '${msg}';
 			
 			if (result == 'register') {

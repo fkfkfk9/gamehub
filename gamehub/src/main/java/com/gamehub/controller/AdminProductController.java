@@ -212,8 +212,8 @@ public class AdminProductController {
 			byte[] bytes = upload.getBytes();
 			HttpSession session = request.getSession(); 
 			String root_path = session.getServletContext().getRealPath("/");
-			//String uploadPath =root_path + "resources\\upload\\ckeditor\\" + fileName;
-			String uploadPath =root_path + "resources/upload/ckeditor/" + fileName;
+			String uploadPath =root_path + "resources\\upload\\ckeditor\\" + fileName;
+			//String uploadPath =root_path + "resources/upload/ckeditor/" + fileName;
 			System.out.println("ck에디터 업로드 경로"+uploadPath);
 			out = new FileOutputStream(new File(uploadPath));
 			out.write(bytes);

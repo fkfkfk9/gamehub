@@ -226,13 +226,17 @@ aside {
     float: left;
     min-height: 240px;    
     background-color: #1d2847;
-    width: 200px;
+    width: 270px;
 }
+aside p a{text-decoration: none; color:white;}
+aside p a:visited{text-decoration: none; color:white;}
+aside p a:active{text-decoration: none; color:white;}
+aside p a:hover{text-decoration: none; color:white;}
 /*본문 부분*/
 section {
     float: left;
     background-color: #1d2847;   
-    width: 930px;
+    width: 860px;
     min-height: 400px;
 }
 /*사이트 정보 입력 부분*/
