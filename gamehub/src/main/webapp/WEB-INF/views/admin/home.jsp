@@ -20,9 +20,12 @@
         <!--aside-->
         <aside>
             <h4>관련 페이지</h4>
-            <p>메일 : fkfkfk9@naver.com</p>
-            <p></p>
-            <p>게시글</p>
+            <p>메일 :</p>
+            <p>fkfkfk9@naver.com</p>
+            <p>소스코드 :</p>
+            <p>https://github.com/fkfkfk9/gamehub</p>
+            <p>작업중인 블로그 :</p>
+            <p>https://fkfkfk9.github.io/</p>
         </aside>
         <!-- section 본문 부분 -->
         <section>
