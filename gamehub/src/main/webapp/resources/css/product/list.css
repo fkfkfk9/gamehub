@@ -1,0 +1,244 @@
+/* aside 카테고리 부분 */
+#childcategory{
+	background: black;
+	color : white;
+	width : 180px;
+	height : 30px;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	font-size: 20px;
+}
+/* 우상단 아이콘 부분 */ 
+.icon{
+	text-align:right;
+	border-bottom: 1px solid #999;
+	margin-bottom: 20px;
+}
+/* 아이콘 이미지 */
+.iconimg{
+	display:inline-block;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	width: 30px;
+	height: 30px;
+}
+/* 리스트 모양의 아이콘 */
+#list{
+	background:url("/img/listicon.png");
+	background-size: 100% auto;
+	width:100%;
+	height:100%;
+	display: inline-block;
+}
+/* 큐브 모양 아이콘 */
+#cube{	
+	background:url("/img/noclickcube.png");
+	background-size: 100%;
+	width:100%;
+	height:100%;
+	display: inline-block;
+}
+/* 아이콘이 마우스오버 했을 경우 */
+#cube:hover{
+	background:url(/img/cubeicon.png);
+	background-size: 100%;
+	width:100%;
+	height:100%;
+	display: inline-block;
+}
+/* 아이콘의 링크영역 부분 */
+div.iconimg a{
+	display:inline-block;
+	padding: 13px 5px 0px 5px;
+	width: 100%;
+	height: 100%;
+}
+/* 검색부가 들어갈 렙 */
+.pdwarp{
+	width: 100%;
+	min-height: 600px;
+}
+.subject{
+	border-bottom: 1px solid #999;
+}
+/* 제목부 */
+.pdwarp h3{
+	border-bottom: 1px solid #999;
+}
+/* 리스트 테이블 */
+.pdwarp table{
+	width: 100%;
+	margin-bottom: 15px;
+}
+.listtr{
+	height: 10px;
+}
+.imgtd{
+	width: 170px;
+}
+.infotd{
+	width : 400px;
+	padding-left: 30px;
+}
+.infotd a{color:white;text-decoration: none}
+.infotd a:active{color:white;text-decoration: none}
+.infotd a:visited{color:white;text-decoration: none}
+.infotd a:hover{color:white;text-decoration: none}
+.btntd{
+	width : 100px;
+}
+/* .pdwarp table tbody tr{
+	height: 0px;
+} */
+/* 라인을 그리기 위한 tr의 td */
+.line td{
+	border-bottom: 1px solid #999;
+}
+.tagspan{
+	background: #335368;
+	color: gray;
+	font-size: 10px;
+	padding: 5px;
+}
+.discount{
+	background: #DF4B05;
+	padding: 4px;
+	border-radius: 5px;
+}
+del{
+	color : #808080;
+}
+/* 페이지 버튼 렙 */
+.pagination {
+	margin: 0 auto;
+    padding: 0;
+    text-align:center;
+    list-style-type: none;
+    overflow: hidden;
+    height: 50px;
+}
+/* 각각 li설정 */
+.pagination li{
+	display: inline-block;
+	margin:0 auto;
+	padding-top : 10px;
+	width:50px;
+	height:27px;
+	background-color: #DF4B05;
+	border: 1px solid #c0c0c0;	
+}
+/* li의 링크 부분 */
+.pagination li a{
+	text-decoration: none; 	
+	padding : 5px 10px 5px 10px;
+	color:white;
+	font-size: 15px;
+	text-align: center;
+}
+.pagination li:hover{
+	background: white;
+}
+.pagination li a:hover {
+	text-decoration: none;
+	color:black; 
+}
+.pagination li a:visited {text-decoration: none; color:#db6a0f}
+.pagination li a:active {text-decoration: none; color:#db6a0f}
+/*버튼*/
+input[type="submit"],input[type="button"] {
+  width:100px;
+  height: 30px;
+  border-radius:5px;
+  @include disable;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#28D2DE), to(#1A878F));
+  background-image: -webkit-linear-gradient(#28D2DE 0%, #1A878F 100%);
+  background-image: -moz-linear-gradient(#28D2DE 0%, #1A878F 100%);
+  background-image: -o-linear-gradient(#28D2DE 0%, #1A878F 100%);
+  background-image: linear-gradient(#28D2DE 0%, #1A878F 100%);
+  font:13px Oswald;
+  color:#FFF;
+  text-align:center;
+  text-transform:uppercase;
+  text-shadow:#000 0px 1px 5px;
+  border:1px solid #000;
+  opacity:0.7;
+	-webkit-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.7);
+  -moz-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.7);
+	box-shadow: 0 8px 6px -6px rgba(0,0,0,0.7);
+  border-top:1px solid rgba(255,255,255,0.8)!important;
+  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255,255,255,0.2)));
+}
+/*포커스가 되는 곳*/
+input:focus{
+  box-shadow:inset 4px 6px 10px -4px rgba(0,0,0,0.7), 0 1px 1px -1px rgba(255,255,255,0.3);
+  background:rgba(0,0,0,0.3);
+}
+/*버튼에 올릴시*/
+input[type="submit"]:hover, input[type="button"]:hover{
+  opacity:1;
+  cursor:pointer;
+}
+.activeBtn{
+	background: black;
+}
+
+/* aside부 */
+
+/*input:text중 짧은부분*/
+.inputshort{
+  font-size:17px;
+  width:177px;
+  height : 10px;
+  padding:15px 0px 15px 8px;
+  border-radius:5px;
+  box-shadow:inset 4px 6px 10px -4px rgba(0,0,0,0.3), 0 1px 1px -1px rgba(255,255,255,0.3);
+  background:rgba(0,0,0,0.2);
+  @include disable;
+  border:1px solid rgba(0,0,0,1);
+  margin-bottom:10px;
+  color:white;
+  text-shadow:#000 0px 1px 5px;
+}
+
+/*placeholder글자색*/
+input::placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+input:-ms-input-placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+input::-webkit-input-placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+input:-moz-placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+/* aside 날짜 버튼 */
+.btns{
+	margin-left : 20px;
+	margin-bottom : 5px;
+	padding-bottom : 20px;
+	width: 70px;
+	height: 20px;
+}
+/* 어사이드 날짜 버튼 클릭시 구문 */
+#dateInfo{
+	text-align: center;
+}
+/* aside 셀렉트 */
+.pdBuy{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.pdBuy select{
+	background: black;
+	color : white;
+}
+.pdBtn{
+	text-align: center;
+	margin-bottom: 30px;
+}

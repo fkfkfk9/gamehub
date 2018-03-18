@@ -1,0 +1,19 @@
+<article class="loginWapper">
+	<div class="loginTitle">
+   		<h3>암호 찾기</h3>
+   	</div>
+   	<div class="loginContents">
+   		<div class="searchName">
+   		<input type="text" id="mem_id" class="inputlong" name="mem_id" placeholder="ID(이메일)" required>
+		<input type="text" id="mem_name" class="inputlong" name="mem_name" placeholder="이름" required>
+		</div>
+		<div>
+		<input type="text" maxlength="3" id="mem_tel1" class="inputshort" name="mem_tel1" placeholder="010" required>-
+		<input type="text" maxlength="4" id="mem_tel2" class="inputshort" name="mem_tel2" required>-
+		<input type="text" maxlength="4" id="mem_tel3" class="inputshort" name="mem_tel3" required>
+		<input type="hidden" name="mem_tel" id="mem_tel" />
+		</div>
+		<div><input type="button" class="submit" id="searchBtn" value="확인"></div>      		
+   	</div>
+</article>            
+<script src="/js/member/searchPw.js"></script>

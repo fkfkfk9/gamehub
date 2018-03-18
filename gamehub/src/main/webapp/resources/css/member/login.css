@@ -1,0 +1,126 @@
+.loginsection{
+	width:1150px;
+	text-align: center;
+}
+/* 폼의 전체를 갑싸는 컨테이너부분 */
+.loginWapper{  
+  border: 1px solid #999;
+  width : 575px;
+  margin: 5% 0 5% 25%
+}
+
+/* #divwrap{
+	width : 80%;
+	margin: auto;
+} */
+
+/*제목 부분*/
+.loginTitle{border-bottom: 1px solid #999;padding:1%;}
+/*개인약관 컨텐츠 부분*/
+.loginContents{
+	text-align:center;
+	margin: 20px;
+	padding: 0 0 20px 10px;
+	border-radius: 10px;
+}
+/*폼 전체*/
+.loginform{
+  width:500px;
+  padding-left: 10px;
+  margin: 40px 0 0 70px;
+}
+/*앵커태그 부분*/
+.loginAtag{
+	margin-bottom: 50px;
+}
+.loginAtag span a{text-decoration: none;color:white;}
+.loginAtag span a:hover{text-decoration: none;color:white;}
+.loginAtag span a:active{text-decoration: none;color:white;}
+.loginAtag span a:visited{text-decoration: none;color:white;} 
+
+.inputlong{
+  font-size:17px;
+  width:320px;
+  padding:15px 0px 15px 8px;
+  border-radius:5px;
+  box-shadow:inset 4px 6px 10px -4px rgba(0,0,0,0.3), 0 1px 1px -1px rgba(255,255,255,0.3);
+  background:rgba(0,0,0,0.2);
+  @include disable;
+  border:1px solid rgba(0,0,0,1);
+  margin-bottom:10px;
+  color:white;
+  text-shadow:#000 0px 1px 5px;
+  display: block;
+}
+
+/*input:text중 짧은부분*/
+.inputshort{
+  font-size:17px;
+  width:80px;
+  padding:15px 0px 15px 8px;
+  border-radius:5px;
+  box-shadow:inset 4px 6px 10px -4px rgba(0,0,0,0.3), 0 1px 1px -1px rgba(255,255,255,0.3);
+  background:rgba(0,0,0,0.2);
+  @include disable;
+  border:1px solid rgba(0,0,0,1);
+  margin-bottom:10px;
+  color:white;
+  text-shadow:#000 0px 1px 5px;
+}
+
+/*placeholder글자색*/
+input::placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+input:-ms-input-placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+input::-webkit-input-placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+input:-moz-placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+
+/*전송버튼*/
+input[type="submit"],input[type="button"] {
+  width:150px;
+  padding:15px;
+  border-radius:5px;
+  @include disable;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#28D2DE), to(#1A878F));
+  background-image: -webkit-linear-gradient(#28D2DE 0%, #1A878F 100%);
+  background-image: -moz-linear-gradient(#28D2DE 0%, #1A878F 100%);
+  background-image: -o-linear-gradient(#28D2DE 0%, #1A878F 100%);
+  background-image: linear-gradient(#28D2DE 0%, #1A878F 100%);
+  font:17px Oswald;
+  color:#FFF;
+  text-align:center;
+  text-transform:uppercase;
+  text-shadow:#000 0px 1px 5px;
+  border:1px solid #000;
+  opacity:0.7;
+	-webkit-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.7);
+  -moz-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.7);
+	box-shadow: 0 8px 6px -6px rgba(0,0,0,0.7);
+  border-top:1px solid rgba(255,255,255,0.8)!important;
+  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255,255,255,0.2)));
+}
+/*포커스가 되는 곳*/
+input:focus{
+  box-shadow:inset 4px 6px 10px -4px rgba(0,0,0,0.7), 0 1px 1px -1px rgba(255,255,255,0.3);
+  background:rgba(0,0,0,0.3);
+}
+/*버튼에 올릴시*/
+input[type="submit"]:hover, input[type="button"]:hover{
+  opacity:1;
+  cursor:pointer;
+}
+/* SearchId.Html 부분 css*/
+.searchName{
+	padding-left: 22.5%;
+}

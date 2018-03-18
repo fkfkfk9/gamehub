@@ -1,0 +1,217 @@
+/*개인약관 웨이퍼 부분*/
+.agreeWapper{
+	border: 1px solid #999;
+	width : 1150px;
+	margin-bottom: 30px;
+}
+/*개인약관 제목부분*/
+.agreeTitle{border-bottom: 1px solid #999}
+.agreeTitle{padding:20px;}
+/*개인약관 컨텐츠 부분*/
+.agreeContents{
+	border: 1px solid #999;
+	background: #263d4d;
+	margin: 20px;
+	padding: 0 0 20px 10px;
+	border-radius: 5px;
+}
+/*개인정보 컨텐츠 안에 table부분*/
+.agreeContents table{
+	margin-top:20px;
+	margin-left:20px;
+	margin-bottom:20px;
+	width: 1050px;
+	border: 1px solid #999;
+}
+/*테이블 가운데 선*/
+.agreeContents table tr th{border-bottom: 1px solid #999;}
+/*텍스트 가운데 정렬*/
+.agerrContents table tr th{text-align: center;}
+/*오른쪽 선*/
+.agreetd{border-right: 1px solid #999;}
+/*체크박스 부분*/
+.agreelb{
+	margin-left:20px;
+}
+/*개인약관 경고문*/
+.agreeWapper p{
+	color : red;
+	padding-left: 20px;
+}
+/*이용약관 Iframe*/
+#agreeiframe{
+	border : 0;
+	width: 1050px;
+	height : 300px;
+	margin : 0px;
+	padding: 20px;
+	display: block;
+}
+/*전체동의, 회원가입 버튼*/
+.allchecked, .submitBtn{
+	text-align: center;
+	margin: 10px;
+}
+#joinbtn{
+	cursor:pointer;
+	width: 300px;	
+	height: 70px;
+	background: #0055aa;
+	color : white;
+	font-size: 20px;
+}
+#joinbtn:hover{background: #0065ca;}
+#atcsubmit{margin-bottom: 50px;}
+
+
+/*회원가입 폼*/
+
+/*폼의 전체를 갑싸는 컨테이너부분*/
+.rgcontainer{
+  width:800px;
+  margin:30px 0 30px 0;  
+}
+/*제목 부분*/
+.rgcontainer h1{
+  text-align:center;
+  padding:50px 0px 0px 0px;
+  font:25px Oswald;
+  color:#FFF;
+  text-transform:uppercase;
+  text-shadow:#000 0px 1px 5px;
+  margin:0px;
+}
+/*인풋 클릭시 나타나는 부분 글씨*/
+.rgcontainer p{
+  font:13px Open Sans;
+  color:white;
+  text-shadow:#000 0px 1px 5px;
+  margin-bottom:30px;
+}
+/*폼 전체*/
+.rgform{
+  width:720px;
+  padding-left: 50px;
+  margin: 0;
+}
+/*input:text중 긴부분*/
+.inputlong{
+  font-size:17px;
+  width:470px;
+  padding:15px 0px 15px 8px;
+  border-radius:5px;
+  box-shadow:inset 4px 6px 10px -4px rgba(0,0,0,0.3), 0 1px 1px -1px rgba(255,255,255,0.3);
+  background:rgba(0,0,0,0.2);
+  @include disable;
+  border:1px solid rgba(0,0,0,1);
+  margin-bottom:10px;
+  color:white;
+  text-shadow:#000 0px 1px 5px;
+}
+/*input:text중 짧은부분*/
+.inputshort{
+  font-size:17px;
+  width:110px;
+  padding:15px 0px 15px 8px;
+  border-radius:5px;
+  box-shadow:inset 4px 6px 10px -4px rgba(0,0,0,0.3), 0 1px 1px -1px rgba(255,255,255,0.3);
+  background:rgba(0,0,0,0.2);
+  @include disable;
+  border:1px solid rgba(0,0,0,1);
+  margin-bottom:10px;
+  color:white;
+  text-shadow:#000 0px 1px 5px;
+}
+
+/*placeholder글자색*/
+input::placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+input:-ms-input-placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+input::-webkit-input-placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+input:-moz-placeholder {
+  color: #9b9b9b;
+  font-style: italic;
+}
+
+/*전송버튼*/
+input[type="submit"]{
+  width:480px;
+  padding:15px;
+  border-radius:5px;
+  @include disable;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#28D2DE), to(#1A878F));
+  background-image: -webkit-linear-gradient(#28D2DE 0%, #1A878F 100%);
+  background-image: -moz-linear-gradient(#28D2DE 0%, #1A878F 100%);
+  background-image: -o-linear-gradient(#28D2DE 0%, #1A878F 100%);
+  background-image: linear-gradient(#28D2DE 0%, #1A878F 100%);
+  font:17px Oswald;
+  color:#FFF;
+  text-align:center;
+  text-transform:uppercase;
+  text-shadow:#000 0px 1px 5px;
+  border:1px solid #000;
+  opacity:0.7;
+	-webkit-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.7);
+  -moz-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.7);
+	box-shadow: 0 8px 6px -6px rgba(0,0,0,0.7);
+  border-top:1px solid rgba(255,255,255,0.8)!important;
+  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(255,255,255,0.2)));
+}
+/*포커스가 되는 곳*/
+input:focus{
+  box-shadow:inset 4px 6px 10px -4px rgba(0,0,0,0.7), 0 1px 1px -1px rgba(255,255,255,0.3);
+  background:rgba(0,0,0,0.3);
+}
+/*버튼에 올릴시*/
+input[type="submit"]:hover{
+  opacity:1;
+  cursor:pointer;
+}
+/*숨겨져 있는 div부분*/
+.help{
+  display:none;
+  padding:0px;
+  margin:0px 0px 15px 0px;
+}
+/*다음주소를 사용하는 div부분*/
+#wrap{
+	display:none;
+	border:1px solid;
+	width:500px;
+	height:300px;
+	margin:5px 0;
+	position:relative
+}
+#btnFoldWrap{
+	cursor:pointer;
+	position:absolute;
+	right:0px;
+	top:-1px;
+	z-index:1
+}
+
+.rgcontainer .rgform #receivep p{color : red;}
+
+.titlediv a{
+	float : right;
+	text-decoration: none;
+	color : white;
+	background: #DF4B05;
+	padding: 10px;
+	margin-right: 230px;
+	margin-top: 5px;
+}
+.titlediv h1{
+	display: inline;
+}
+.titlediv a:active{text-decoration: none;color : white;}
+.titlediv a:visited{text-decoration: none;color : white;}
+.titlediv a:hover{text-decoration: none;color : black; background: white;}

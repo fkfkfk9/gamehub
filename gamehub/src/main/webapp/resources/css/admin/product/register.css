@@ -1,0 +1,38 @@
+/* ī�װ� ����Ʈ ���� */
+select[name='rootCategory'], select[name='firstCategory'], select[name='secondCategory']{
+	background: black;
+	color : white;
+	width : 160px;
+	height : 40px;
+	margin-right: 20px;
+	font-size: 20px;
+}
+/* ī�װ� div ���� */
+.category{
+	margin-bottom: 15px;
+}
+/* ���ݺκ� �ؽ�Ʈspan */
+.pricespan{
+	margin-right: 20px;
+}
+/* �ý��� �䱸���� �ؽ�Ʈ ����� */
+#pd_requirement{
+	background: black;
+	color: white;
+	border-radius: 5px;
+}
+/* ������ �ֱ����� �ƹ� ������� div */
+.margindiv{
+	margin-bottom: 20px;
+}
+/* ���� ���ε带 ���� ���� */
+.mainImgDrop, .subimgDrop{
+	width: 600px;
+	height: 113px;
+	border: 1px dotted gray;
+	background-color: lightslategrey;
+	margin: auto;
+}
+.mainImgUpload div small img, .uploadedList div small img{
+	cursor: pointer;	
+} 

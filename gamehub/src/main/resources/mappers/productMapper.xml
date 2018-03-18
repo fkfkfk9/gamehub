@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gamehub.mapper.ProductMapper">
+
+	<select id="getCategory" resultType="CategoryVO">
+		select LEVEL, cg_name, cg_code, cg_parent
+		from tbl_category
+		start with CG_PARENT IS NULL
+		connect by prior cg_code = cg_parent
+	</select>
+	
+	<!-- list에서 사용할 카테고리 정보 -->
+	<select id="getSearchCategory" resultType="ProductVO">
+		select c2.cg_code cg_code, c1.CG_CODE cg_parent, c1.CG_PARENT cg_ancestor
+		 from tbl_category c1 INNER JOIN tbl_category c2
+		 ON c1.CG_CODE = c2.CG_PARENT
+		 where c2.CG_CODE = #{cateCode}
+	</select>
+	
+	<!-- 상품 상세정보 받아오기 -->
+	<select id="getProductInfo" resultType="ProductVO">
+		SELECT pd_num, pd_name, pd_price, pd_discount, pd_develop, pd_content, pd_amount,
+		pd_bonus, pd_requirement, pd_publisher, pd_img, pd_korea, pd_buy, pd_release,
+		c1.cg_name cg_name, c2.cg_name cg_p_name
+          FROM tbl_product   INNER JOIN tbl_category c1 on tbl_product.cg_code = c1.cg_code
+                             INNER JOIN tbl_category c2 on c1.CG_PARENT = c2.CG_CODE
+          where pd_num = #{pd_num}
+	</select>
+	
+	<!-- 상세정보에 들어갈 Attach정보 받아오기 -->
+	<select id="getAttach" resultType="AttachVO">
+		select a_fullname, a_filename, a_format, a_scalname from tbl_attach where pd_num = #{pd_num}
+	</select>
+	
+	<!-- 카테고리 받아오기 -->
+	<select id="childCategory" resultType="CategoryVO">
+		select cg_name, cg_code
+		from tbl_category
+		where cg_parent = #{cateCode}
+	</select>
+	
+	<!-- 서치 페이징 작업이 들어간 리스트 시작 -->
+	<sql id="search">
+	<if test="searchType != null" > 
+		<!-- 상품명으로 검색 -->
+   		<if test="searchType == 'pn'.toString()">
+     		and pd_name like '%' || #{keyword} || '%'
+   		</if>
+   		<!-- 1차 카테고리로 검색 -->
+   		<if test="searchType == 'ctg1'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   		</if>
+   		<!-- 2차 카테고리로 검색 -->
+   		<if test="searchType == 'ctg2'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   		</if>
+   		<!-- 3차 카테고리로 검색 -->
+   		<if test="searchType == 'ctg3'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   		</if>     
+   		<!-- 가격별로 검색 -->
+   		<!-- 최저값만 있을 때 -->
+   		<if test="searchType == 'ppmin'.toString()">
+   			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   		</if>
+   		<!-- 최대값만 있을 때 -->
+   		<if test="searchType == 'ppmax'.toString()">
+   			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   		</if>              
+   		<!-- 둘 모두 있을 때 -->
+   		<if test="searchType == 'pp'.toString()">
+   			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   		</if>
+   		<!-- 판매여부로 검색 -->
+   		<if test="searchType == 'pb'.toString()">
+     		and pd_buy = #{display}
+   		</if>
+   		
+		<!-- 1차카테고리 경우의 수 -->
+		<!-- 2개씩 검색할 때 -->
+   		<!-- 1차카테 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차 카테고리 2개씩 검색 끝 -->
+   		
+   		<!-- 1차 카테고리 3개씩 검색 -->
+   		<!-- 1차카테 & 상품이름 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_pn'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차카테 & 최저가격 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_ppmin'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차카테 & 최대가격 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_ppmax'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차카테 & 가격 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_pp'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차 카테고리 3개씩 검색 끝 -->
+   		
+   		<!-- 1차 카테고리 4개씩 검색 -->
+   		<!-- 1차카테 & 상품명 & 최저금액 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_pn_ppmin'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차카테 & 상품명 & 최대금액 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_pn_ppmax'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차카테 & 상품명 & 금액 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_pn_pp'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차 카테고리 4개씩 검색 끝 -->
+   		
+   		<!-- 1차 카테고리 5개씩 검색 -->
+   		<!-- 1차카테 & 상품명 & 최저금액 & 날짜 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_pn_ppmin_pd'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ To_Date( pd_regdate, 'yyyy.mm.dd') >= (To_Date( sysdate, 'yyyy.mm.dd')-#{date}) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차카테 & 상품명 & 최대금액 & 날짜 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_pn_ppmax_pd'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ To_Date( pd_regdate, 'yyyy.mm.dd') >= (To_Date( sysdate, 'yyyy.mm.dd')-#{date}) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차카테 & 상품명 & 금액 & 날짜 & 판매여부 검색 -->
+		<if test="searchType == 'ctg1_pb_pn_pp_pd'.toString()">
+   			and tbl_product.CG_CODE in (select c2.CG_CODE from TBL_CATEGORY c1 inner join TBL_CATEGORY c2 on c1.CG_CODE = c2.cg_parent where c1.cg_parent= #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ To_Date( pd_regdate, 'yyyy.mm.dd') >= (To_Date( sysdate, 'yyyy.mm.dd')-#{date}) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 1차 카테고리 5개씩 검색 끝 -->
+   		<!-- 1차 카테고리 끝 -->
+   		
+   		<!-- 2차카테고리 경우의 수 -->
+		<!-- 2개씩 검색할 때 -->
+   		<!-- 2차카테 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차 카테고리 2개씩 검색 끝 -->
+   		
+   		<!-- 2차 카테고리 3개씩 검색 -->
+   		<!-- 2차카테 & 상품이름 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_pn'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차카테 & 최저가격 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_ppmin'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차카테 & 최대가격 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_ppmax'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차카테 & 가격 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_pp'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차 카테고리 3개씩 검색 끝 -->
+   		
+   		<!-- 2차 카테고리 4개씩 검색 -->
+   		<!-- 2차카테 & 상품명 & 최저금액 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_pn_ppmin'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차카테 & 상품명 & 최대금액 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_pn_ppmax'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차카테 & 상품명 & 금액 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_pn_pp'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차 카테고리 4개씩 검색 끝 -->
+   		
+   		<!-- 2차 카테고리 5개씩 검색 -->
+   		<!-- 2차카테 & 상품명 & 최저금액 & 날짜 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_pn_ppmin_pd'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ To_Date( pd_regdate, 'yyyy.mm.dd') >= (To_Date( sysdate, 'yyyy.mm.dd')-#{date}) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차카테 & 상품명 & 최대금액 & 날짜 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_pn_ppmax_pd'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ To_Date( pd_regdate, 'yyyy.mm.dd') >= (To_Date( sysdate, 'yyyy.mm.dd')-#{date}) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차카테 & 상품명 & 금액 & 날짜 & 판매여부 검색 -->
+		<if test="searchType == 'ctg2_pb_pn_pp_pd'.toString()">
+   			and tbl_product.CG_CODE in (select CG_CODE from TBL_CATEGORY where cg_parent = #{cateCode})
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ To_Date( pd_regdate, 'yyyy.mm.dd') >= (To_Date( sysdate, 'yyyy.mm.dd')-#{date}) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 2차 카테고리 5개씩 검색 끝 -->
+   		<!-- 2차 카테고리 끝 -->
+   		
+   		<!-- 3차카테고리 경우의 수 -->
+		<!-- 2개씩 검색할 때 -->
+   		<!-- 3차카테 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차 카테고리 2개씩 검색 끝 -->
+   		
+   		<!-- 3차 카테고리 3개씩 검색 -->
+   		<!-- 3차카테 & 상품이름 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_pn'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and pd_name like '%' || #{keyword} || '%'
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차카테 & 최저가격 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_ppmin'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차카테 & 최대가격 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_ppmax'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차카테 & 가격 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_pp'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차 카테고리 3개씩 검색 끝 -->
+   		
+   		<!-- 3차 카테고리 4개씩 검색 -->
+   		<!-- 3차카테 & 상품명 & 최저금액 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_pn_ppmin'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차카테 & 상품명 & 최대금액 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_pn_ppmax'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차카테 & 상품명 & 금액 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_pn_pp'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차 카테고리 4개씩 검색 끝 -->
+   		
+   		<!-- 3차 카테고리 5개씩 검색 -->
+   		<!-- 3차카테 & 상품명 & 최저금액 & 날짜 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_pn_ppmin_pd'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ To_Date( pd_regdate, 'yyyy.mm.dd') >= (To_Date( sysdate, 'yyyy.mm.dd')-#{date}) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차카테 & 상품명 & 최대금액 & 날짜 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_pn_ppmax_pd'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ To_Date( pd_regdate, 'yyyy.mm.dd') >= (To_Date( sysdate, 'yyyy.mm.dd')-#{date}) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차카테 & 상품명 & 금액 & 날짜 & 판매여부 검색 -->
+		<if test="searchType == 'ctg3_pb_pn_pp_pd'.toString()">
+   			and tbl_product.CG_CODE = #{cateCode}
+   			and pd_name like '%' || #{keyword} || '%'
+			and <![CDATA[ #{maxPrice} > ((pd_price/100)*(100-pd_discount)) ]]>
+			and <![CDATA[ #{minPrice} < ((pd_price/100)*(100-pd_discount)) ]]>
+   			and <![CDATA[ To_Date( pd_regdate, 'yyyy.mm.dd') >= (To_Date( sysdate, 'yyyy.mm.dd')-#{date}) ]]>
+   			and pd_buy = #{display}
+   		</if>
+   		<!-- 3차 카테고리 5개씩 검색 끝 -->
+   		<!-- 3차 카테고리 끝 -->
+ 	</if>  
+</sql>
+	
+	<select id="searchListPage" parameterType="SearchPaging" resultType="ProductVO">
+	<![CDATA[
+	SELECT pd_num,pd_img, pd_price, pd_name, pd_discount, pd_publisher, pd_buy, pd_korea,cg_name, cg_p_name, pd_amount
+          FROM (
+            SELECT pd_num,pd_img, pd_price, pd_name, pd_discount, pd_publisher, pd_buy, pd_korea,c1.cg_name cg_name, c2.cg_name cg_p_name, pd_amount
+              , ROW_NUMBER() OVER(ORDER BY pd_num DESC) board_seq
+          FROM tbl_product   INNER JOIN tbl_category c1 on tbl_product.cg_code = c1.cg_code
+                             INNER JOIN tbl_category c2 on c1.CG_PARENT = c2.CG_CODE 
+            where pd_num > 0
+    ]]>    
+          <include refid="search"></include>
+    <![CDATA[
+         )  DS
+         WHERE board_seq BETWEEN #{startQuery} AND #{endQuery}
+    ]]>
+	</select>
+	
+	<select id="searchCount" parameterType="SearchPaging" resultType="int">
+		<![CDATA[
+		select count(pd_num) from tbl_product where pd_num > 0
+		]]>
+		<include refid="search"></include>
+	</select>
+	<!-- 서치 페이징 작업이 들어간 리스트 끝 -->
+</mapper>

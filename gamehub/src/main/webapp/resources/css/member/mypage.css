@@ -1,0 +1,88 @@
+/**********************  마이페이지 공통 부  *************************/
+
+/*section*/
+.mypagesection{
+	width:1160px;
+}
+/*컨테이너 부분 즉 모든 섹션부를 감싼다.*/
+.mypagewrap{
+	width : 1160px;
+	height: auto;
+	margin: 0;
+	padding: 0;
+}
+/* 텝메뉴가 들어갈 부분  */
+.tapMenu{
+	width : 1160px;
+}
+/* 텝메뉴의 ul부분 */
+.menu{
+	width : 1160px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	border: 1px solid #999;
+}
+/* 텝메뉴의 li부분 */
+.tapItem{
+	border-right: 1px solid #999;
+	margin: 0 auto;
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	display: inline-block;
+	width: 140px;
+	height: 60px;
+}
+/* li에 마우스가 올라갈때 */
+.tapItem:hover{
+	border-top: 2px solid #ffffff;
+}
+/* li중 현재 선택된 페이지 */
+#active{
+	border-bottom: 3px solid #0055aa;
+	border-top: 3px solid #0055aa;
+}
+/* li안에 a의 태그효과를 제거해줌  */
+.tapItem a{
+	text-decoration: none;
+    color: white;
+    display: inline-block;
+    padding: 20px 33px 35px 33px;
+}
+.tapItem a:active{text-decoration: none; color: white;}
+.tapItem a:hover{text-decoration: none; color: white;}
+.tapItem a:visited{text-decoration: none; color: white;}
+
+/****************************************************************/
+/* delete 부분 */
+#deletewrap{
+	width:1160px;
+}
+.deleteform{
+	width:1160px;
+	margin: auto;
+}
+#warning{	
+	margin-top : 10px;
+	margin-bottom : 50px;
+	width:1160px;
+	background: #ffe1e1;
+	border-radius: 5px;
+	padding: 5px 0 5px 0;
+}
+#warning p{
+	color:red;
+	margin-left : 30px;
+}
+#deletecontents{
+	margin-top : 50px;
+	margin-bottom : 50px;
+	width:1160px;
+	border: 1px solid #999;
+}
+#deletecontents form{
+	width:700px;
+	margin: 50px;
+}
